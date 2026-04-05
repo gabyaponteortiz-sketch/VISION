@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paté — Luxury Streetwear</title>
+  <meta name="description" content="Paté — Where minimalism meets rebellion. Premium streetwear for the uncompromising.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <span class="loader__brand">Paté</span>
+      <div class="loader__bar"><div class="loader__progress"></div></div>
+    </div>
+  </div>
+
+  <!-- Cursor follower -->
+  <div id="cursor" class="cursor" aria-hidden="true">
+    <div class="cursor__dot"></div>
+    <div class="cursor__ring"></div>
+  </div>
+
+  <!-- Navigation -->
+  <header id="nav" class="nav">
+    <a href="#" class="nav__logo">Paté</a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#collections" class="nav__link">Collections</a>
+      <a href="#editorial" class="nav__link">Editorial</a>
+      <a href="#story" class="nav__link">Story</a>
+      <a href="#contact" class="nav__link">Contact</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="nav__cart" aria-label="Shopping bag">
+        Bag <span class="nav__cart-count">0</span>
+      </button>
+      <button class="nav__menu" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="mobile-menu">
+    <nav class="mobile-menu__nav">
+      <a href="#collections" class="mobile-menu__link" data-index="01">Collections</a>
+      <a href="#editorial" class="mobile-menu__link" data-index="02">Editorial</a>
+      <a href="#story" class="mobile-menu__link" data-index="03">Story</a>
+      <a href="#contact" class="mobile-menu__link" data-index="04">Contact</a>
+    </nav>
+    <div class="mobile-menu__footer">
+      <p class="mobile-menu__tagline">Where minimalism<br>meets rebellion.</p>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="hero__bg">
+        <div class="hero__gradient"></div>
+        <div class="hero__noise"></div>
+        <div class="hero__grid-lines">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="hero__content">
+        <div class="hero__eyebrow reveal">
+          <span class="hero__season">SS26</span>
+          <span class="hero__divider"></span>
+          <span class="hero__subtitle-text">New Collection</span>
+        </div>
+        <h1 class="hero__title">
+          <span class="hero__title-line reveal"><span class="hero__title-word">Wear</span></span>
+          <span class="hero__title-line reveal"><span class="hero__title-word">The</span></span>
+          <span class="hero__title-line hero__title-line--accent reveal"><span class="hero__title-word">Silence</span></span>
+        </h1>
+        <p class="hero__description reveal">
+          Crafted for those who speak through presence.<br>
+          Premium essentials. Zero noise.
+        </p>
+        <div class="hero__cta reveal">
+          <a href="#collections" class="btn btn--primary">
+            <span class="btn__text">Explore Collection</span>
+            <span class="btn__arrow">&rarr;</span>
+          </a>
+          <a href="#editorial" class="btn btn--ghost">
+            <span class="btn__text">View Lookbook</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero__scroll-indicator">
+        <span class="hero__scroll-text">Scroll</span>
+        <span class="hero__scroll-line"></span>
+      </div>
+      <div class="hero__marquee" aria-hidden="true">
+        <div class="hero__marquee-track">
+          <span>Paté</span><span>&mdash;</span>
+          <span>Minimal</span><span>&mdash;</span>
+          <span>Premium</span><span>&mdash;</span>
+          <span>Bold</span><span>&mdash;</span>
+          <span>SS26</span><span>&mdash;</span>
+          <span>Paté</span><span>&mdash;</span>
+          <span>Minimal</span><span>&mdash;</span>
+          <span>Premium</span><span>&mdash;</span>
+          <span>Bold</span><span>&mdash;</span>
+          <span>SS26</span><span>&mdash;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="featured" class="featured">
+      <div class="section-header reveal">
+        <span class="section-label">01 / Featured</span>
+        <h2 class="section-title">The Essentials</h2>
+      </div>
+      <div class="featured__grid">
+        <article class="product-card reveal" data-delay="0">
+          <div class="product-card__image">
+            <div class="product-card__placeholder" style="--hue: 0; --sat: 70%">
+              <span class="product-card__placeholder-text">Paté</span>
+            </div>
+            <div class="product-card__overlay">
+              <span class="product-card__quick">Quick View</span>
+            </div>
+            <span class="product-card__badge">New</span>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__name">Phantom Oversized Tee</h3>
+            <span class="product-card__price">$185</span>
+          </div>
+        </article>
+        <article class="product-card reveal" data-delay="100">
+          <div class="product-card__image">
+            <div class="product-card__placeholder" style="--hue: 0; --sat: 0%">
+              <span class="product-card__placeholder-text">Paté</span>
+            </div>
+            <div class="product-card__overlay">
+              <span class="product-card__quick">Quick View</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__name">Void Cargo Pants</h3>
+            <span class="product-card__price">$320</span>
+          </div>
+        </article>
+        <article class="product-card reveal" data-delay="200">
+          <div class="product-card__image">
+            <div class="product-card__placeholder" style="--hue: 355; --sat: 85%">
+              <span class="product-card__placeholder-text">Paté</span>
+            </div>
+            <div class="product-card__overlay">
+              <span class="product-card__quick">Quick View</span>
+            </div>
+            <span class="product-card__badge badge--limited">Limited</span>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__name">Blood Moon Hoodie</h3>
+            <span class="product-card__price">$410</span>
+          </div>
+        </article>
+        <article class="product-card reveal" data-delay="300">
+          <div class="product-card__image">
+            <div class="product-card__placeholder" style="--hue: 0; --sat: 5%">
+              <span class="product-card__placeholder-text">Paté</span>
+            </div>
+            <div class="product-card__overlay">
+              <span class="product-card__quick">Quick View</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__name">Silence Bomber Jacket</h3>
+            <span class="product-card__price">$580</span>
+          </div>
+        </article>
+      </div>
+      <div class="featured__cta reveal">
+        <a href="#" class="btn btn--outline">
+          <span class="btn__text">View All Products</span>
+          <span class="btn__arrow">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Horizontal Scroll Showcase -->
+    <section id="collections" class="collections">
+      <div class="section-header reveal">
+        <span class="section-label">02 / Collections</span>
+        <h2 class="section-title">SS26<br><em>Archive</em></h2>
+      </div>
+      <div class="collections__scroller" id="collectionsScroller">
+        <div class="collections__track">
+          <article class="collection-card">
+            <div class="collection-card__image">
+              <div class="collection-card__placeholder" data-collection="Noir">
+                <div class="collection-card__visual">
+                  <span>01</span>
+                </div>
+              </div>
+            </div>
+            <div class="collection-card__content">
+              <span class="collection-card__number">01</span>
+              <h3 class="collection-card__title">Noir Essentials</h3>
+              <p class="collection-card__desc">The foundation. All-black staples designed for permanence.</p>
+              <a href="#" class="collection-card__link">Explore &rarr;</a>
+            </div>
+          </article>
+          <article class="collection-card">
+            <div class="collection-card__image">
+              <div class="collection-card__placeholder" data-collection="Blood">
+                <div class="collection-card__visual">
+                  <span>02</span>
+                </div>
+              </div>
+            </div>
+            <div class="collection-card__content">
+              <span class="collection-card__number">02</span>
+              <h3 class="collection-card__title">Blood Protocol</h3>
+              <p class="collection-card__desc">Crimson accents on muted foundations. Tension made wearable.</p>
+              <a href="#" class="collection-card__link">Explore &rarr;</a>
+            </div>
+          </article>
+          <article class="collection-card">
+            <div class="collection-card__image">
+              <div class="collection-card__placeholder" data-collection="Ghost">
+                <div class="collection-card__visual">
+                  <span>03</span>
+                </div>
+              </div>
+            </div>
+            <div class="collection-card__content">
+              <span class="collection-card__number">03</span>
+              <h3 class="collection-card__title">Ghost Layer</h3>
+              <p class="collection-card__desc">Translucent overlays. Structured deconstruction. Invisible armor.</p>
+              <a href="#" class="collection-card__link">Explore &rarr;</a>
+            </div>
+          </article>
+          <article class="collection-card">
+            <div class="collection-card__image">
+              <div class="collection-card__placeholder" data-collection="Concrete">
+                <div class="collection-card__visual">
+                  <span>04</span>
+                </div>
+              </div>
+            </div>
+            <div class="collection-card__content">
+              <span class="collection-card__number">04</span>
+              <h3 class="collection-card__title">Concrete Poetry</h3>
+              <p class="collection-card__desc">Urban textures. Raw materials. Brutalist silhouettes refined.</p>
+              <a href="#" class="collection-card__link">Explore &rarr;</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="collections__nav">
+        <button class="collections__arrow collections__arrow--prev" id="scrollPrev" aria-label="Previous">&larr;</button>
+        <div class="collections__progress">
+          <div class="collections__progress-bar" id="scrollProgress"></div>
+        </div>
+        <button class="collections__arrow collections__arrow--next" id="scrollNext" aria-label="Next">&rarr;</button>
+      </div>
+    </section>
+
+    <!-- Full-width statement -->
+    <section class="statement">
+      <div class="statement__inner reveal">
+        <blockquote class="statement__quote">
+          <span class="statement__mark">&ldquo;</span>
+          We don&rsquo;t design for trends.<br>
+          We design for <em>permanence</em>.
+          <span class="statement__mark statement__mark--close">&rdquo;</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Editorial / Lookbook -->
+    <section id="editorial" class="editorial">
+      <div class="section-header reveal">
+        <span class="section-label">03 / Editorial</span>
+        <h2 class="section-title">Lookbook<br><em>SS26</em></h2>
+      </div>
+      <div class="editorial__grid">
+        <div class="editorial__item editorial__item--tall reveal">
+          <div class="editorial__image">
+            <div class="editorial__placeholder" data-mood="moody">
+              <div class="editorial__visual-element"></div>
+              <span class="editorial__caption-overlay">Vol. I</span>
+            </div>
+          </div>
+          <div class="editorial__meta">
+            <span>Silence in Motion</span>
+            <span>Photography by Studio Void</span>
+          </div>
+        </div>
+        <div class="editorial__item editorial__item--wide reveal" data-delay="100">
+          <div class="editorial__image">
+            <div class="editorial__placeholder" data-mood="contrast">
+              <div class="editorial__visual-element"></div>
+              <span class="editorial__caption-overlay">Vol. II</span>
+            </div>
+          </div>
+          <div class="editorial__meta">
+            <span>Blood & Concrete</span>
+            <span>Creative Direction</span>
+          </div>
+        </div>
+        <div class="editorial__item reveal" data-delay="200">
+          <div class="editorial__image">
+            <div class="editorial__placeholder" data-mood="minimal">
+              <div class="editorial__visual-element"></div>
+              <span class="editorial__caption-overlay">Vol. III</span>
+            </div>
+          </div>
+          <div class="editorial__meta">
+            <span>Negative Space</span>
+            <span>Lookbook SS26</span>
+          </div>
+        </div>
+        <div class="editorial__item reveal" data-delay="300">
+          <div class="editorial__image">
+            <div class="editorial__placeholder" data-mood="dark">
+              <div class="editorial__visual-element"></div>
+              <span class="editorial__caption-overlay">Vol. IV</span>
+            </div>
+          </div>
+          <div class="editorial__meta">
+            <span>After Hours</span>
+            <span>Campaign</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Story -->
+    <section id="story" class="story">
+      <div class="story__layout">
+        <div class="story__visual reveal">
+          <div class="story__image-container">
+            <div class="story__image-placeholder">
+              <span class="story__image-brand">P</span>
+            </div>
+            <div class="story__image-accent"></div>
+          </div>
+          <div class="story__stats">
+            <div class="story__stat">
+              <span class="story__stat-number" data-target="2019">0</span>
+              <span class="story__stat-label">Founded</span>
+            </div>
+            <div class="story__stat">
+              <span class="story__stat-number" data-target="47">0</span>
+              <span class="story__stat-label">Countries</span>
+            </div>
+            <div class="story__stat">
+              <span class="story__stat-number" data-target="12">0</span>
+              <span class="story__stat-label">Collections</span>
+            </div>
+          </div>
+        </div>
+        <div class="story__text reveal" data-delay="150">
+          <span class="section-label">04 / Our Story</span>
+          <h2 class="story__title">Born From<br><em>Silence</em></h2>
+          <div class="story__body">
+            <p>Paté emerged from a rejection of noise. In a world drowning in fast fashion and hollow trends, we chose the opposite path &mdash; to create garments that command attention through restraint.</p>
+            <p>Every piece is an exercise in precision. We source the finest Japanese and Italian fabrics, partner with artisan ateliers, and obsess over every seam, every cut, every drape. The result is clothing that doesn't just fit &mdash; it transforms.</p>
+            <p>Our name is a statement: refined, intentional, unapologetic. Like the finest things in life, Paté is an acquired taste &mdash; and once acquired, irreplaceable.</p>
+          </div>
+          <div class="story__values">
+            <span class="story__value">Precision</span>
+            <span class="story__value-dot"></span>
+            <span class="story__value">Permanence</span>
+            <span class="story__value-dot"></span>
+            <span class="story__value">Presence</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee divider -->
+    <div class="divider-marquee" aria-hidden="true">
+      <div class="divider-marquee__track">
+        <span>New Arrivals</span><span>&bull;</span>
+        <span>Free Shipping Over $300</span><span>&bull;</span>
+        <span>Handcrafted in Tokyo</span><span>&bull;</span>
+        <span>Limited Editions</span><span>&bull;</span>
+        <span>New Arrivals</span><span>&bull;</span>
+        <span>Free Shipping Over $300</span><span>&bull;</span>
+        <span>Handcrafted in Tokyo</span><span>&bull;</span>
+        <span>Limited Editions</span><span>&bull;</span>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <section id="contact" class="newsletter">
+      <div class="newsletter__layout">
+        <div class="newsletter__content reveal">
+          <span class="section-label">05 / Stay Connected</span>
+          <h2 class="newsletter__title">Join The<br><em>Inner Circle</em></h2>
+          <p class="newsletter__desc">Early access. Exclusive drops. Behind the seams.<br>No spam. Only signal.</p>
+        </div>
+        <form class="newsletter__form reveal" data-delay="100" onsubmit="return false;">
+          <div class="newsletter__input-group">
+            <input type="email" class="newsletter__input" placeholder="Enter your email" required autocomplete="email" aria-label="Email address">
+            <button type="submit" class="newsletter__submit">
+              <span class="newsletter__submit-text">Subscribe</span>
+              <span class="newsletter__submit-arrow">&rarr;</span>
+            </button>
+          </div>
+          <p class="newsletter__legal">By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__logo">Paté</span>
+        <p class="footer__tagline">Where minimalism<br>meets rebellion.</p>
+      </div>
+      <div class="footer__columns">
+        <div class="footer__col">
+          <h4 class="footer__col-title">Shop</h4>
+          <a href="#" class="footer__link">New Arrivals</a>
+          <a href="#" class="footer__link">All Products</a>
+          <a href="#" class="footer__link">Collections</a>
+          <a href="#" class="footer__link">Gift Cards</a>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Brand</h4>
+          <a href="#" class="footer__link">Our Story</a>
+          <a href="#" class="footer__link">Editorial</a>
+          <a href="#" class="footer__link">Press</a>
+          <a href="#" class="footer__link">Careers</a>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Help</h4>
+          <a href="#" class="footer__link">Shipping</a>
+          <a href="#" class="footer__link">Returns</a>
+          <a href="#" class="footer__link">Size Guide</a>
+          <a href="#" class="footer__link">Contact</a>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Connect</h4>
+          <a href="#" class="footer__link">Instagram</a>
+          <a href="#" class="footer__link">Twitter / X</a>
+          <a href="#" class="footer__link">Pinterest</a>
+          <a href="#" class="footer__link">TikTok</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span class="footer__copy">&copy; 2026 Paté. All rights reserved.</span>
+      <div class="footer__legal-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+    <div class="footer__giant-logo" aria-hidden="true">Paté</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
