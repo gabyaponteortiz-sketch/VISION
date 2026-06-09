@@ -1,6 +1,6 @@
 # 1H Rejection Blocks → 1M Entries (NY) — MNQ / NQ
 
-A TradingView Pine Script (v5) indicator that marks **1-hour Rejection Blocks**
+A TradingView Pine Script (v6) indicator that marks **1-hour Rejection Blocks**
 and fires clean **BUY / SELL** signals when price returns to tap them, with a
 fixed-R trade plan.
 

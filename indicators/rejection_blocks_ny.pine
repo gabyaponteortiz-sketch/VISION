@@ -1,4 +1,4 @@
-//@version=5
+//@version=6
 // =============================================================================
 //  1H REJECTION BLOCKS  ->  1M ENTRIES  (New York Session)   [MNQ / NQ]
 // =============================================================================
@@ -102,8 +102,8 @@ if isNewHTF and (rbBull or rbBear) and barstate.isconfirmed
     bot = zBot
     mid = (top + bot) / 2.0
     col = rbBull ? bullCol : bearCol
-    bx = na
-    ml = na
+    box  bx = na
+    line ml = na
     if showBlocks
         bx := box.new(bar_index, top, bar_index, bot, border_color = color.new(col, 35),
              bgcolor = color.new(col, 88), border_width = 1)
@@ -121,8 +121,10 @@ if array.size(blocks) > 0
         b = array.get(blocks, i)
         if not b.done
             // keep the zone extending to the live bar
-            box.set_right(b.bx, bar_index)
-            line.set_x2(b.ml, bar_index)
+            if not na(b.bx)
+                box.set_right(b.bx, bar_index)
+            if not na(b.ml)
+                line.set_x2(b.ml, bar_index)
 
             // arm once price has left the zone (so we only catch a genuine return)
             if b.bull and low  > b.top
@@ -134,9 +136,11 @@ if array.size(blocks) > 0
             broke = (b.bull and close < b.bot) or (not b.bull and close > b.top)
             if broke
                 b.done := true
-                box.set_bgcolor(b.bx, color.new(color.gray, 92))
-                box.set_border_color(b.bx, color.new(color.gray, 70))
-                line.set_color(b.ml, color.new(color.gray, 80))
+                if not na(b.bx)
+                    box.set_bgcolor(b.bx, color.new(color.gray, 92))
+                    box.set_border_color(b.bx, color.new(color.gray, 70))
+                if not na(b.ml)
+                    line.set_color(b.ml, color.new(color.gray, 80))
 
             // tap = price returns into the zone while armed and in-session
             tapBull = b.bull       and b.armed and low  <= b.top and inNY and not b.done
@@ -170,7 +174,8 @@ if array.size(blocks) > 0
 
                 if oneShot
                     b.done := true
-                    box.set_right(b.bx, bar_index)
+                    if not na(b.bx)
+                        box.set_right(b.bx, bar_index)
 
 // ------------------------------ Markers -------------------------------------
 plotshape(buySig,  title = "Buy",  style = shape.triangleup,   location = location.belowbar, color = bullCol, size = size.tiny)
