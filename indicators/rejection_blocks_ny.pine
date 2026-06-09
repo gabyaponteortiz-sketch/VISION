@@ -1,0 +1,182 @@
+//@version=5
+// =============================================================================
+//  1H REJECTION BLOCKS  ->  1M ENTRIES  (New York Session)   [MNQ / NQ]
+// =============================================================================
+//  WHAT IT DOES
+//  ------------
+//  1. Detects Rejection Blocks on the 1H (configurable) timeframe.
+//     - BULLISH RB : a bullish rejection wick (long lower wick at a swing low)
+//                    that traded INTO a Fair Value Gap.
+//     - BEARISH RB : a bearish rejection wick (long upper wick at a swing high)
+//                    that traded INTO a Fair Value Gap.
+//  2. Marks each block as a clean zone (body -> wick) with a dotted 50% line.
+//  3. Runs entries on your chart timeframe (designed for the 1M). When price
+//     returns and TAPS an armed block it prints a clear BUY / SELL signal.
+//  4. Stop-loss = 50% of the block. Target = configurable Risk:Reward (def 2R).
+//  5. Signals are filtered to the New York session (09:30-16:00 ET) by default.
+//
+//  Built for MNQ / NQ futures but works on any symbol.
+//  Use it on the 1-minute chart for entries.
+// =============================================================================
+
+indicator("1H Rejection Blocks -> 1M Entries (NY) [MNQ/NQ]", "RB NY",
+     overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500)
+
+// ----------------------------- Inputs ---------------------------------------
+grpD = "Rejection Block Detection (HTF)"
+htf        = input.timeframe("60",  "Rejection Block timeframe",                 group = grpD)
+wickFactor = input.float(1.0,       "Min wick : body ratio", minval = 0.1, step = 0.1, group = grpD,
+     tooltip = "The rejection wick must be at least this multiple of the candle body.")
+useFVG     = input.bool(true,       "Require Fair Value Gap confluence",         group = grpD,
+     tooltip = "Only keep rejection wicks that traded into a FVG (matches the rejection-block definition). Turn off for raw wick rejections.")
+
+grpT = "Trade"
+rr         = input.float(2.0,       "Risk : Reward target", minval = 0.5, step = 0.5, group = grpT)
+maxBlocks  = input.int(12,          "Max active blocks kept", minval = 1, maxval = 60, group = grpT)
+oneShot    = input.bool(true,       "One signal per block",                     group = grpT)
+
+grpS = "Session Filter"
+useSession = input.bool(true,       "Only signal during New York session",      group = grpS)
+nySess     = input.session("0930-1600", "NY session",                           group = grpS)
+nyTz       = input.string("America/New_York", "Session timezone",               group = grpS)
+
+grpV = "Visuals"
+bullCol    = input.color(#089981,   "Bullish", group = grpV, inline = "c")
+bearCol    = input.color(#f23645,   "Bearish", group = grpV, inline = "c")
+showRR     = input.bool(true,       "Show Risk / Reward boxes",                 group = grpV)
+boxLen     = input.int(50,          "Trade box length (bars)", minval = 10, maxval = 500, group = grpV)
+showBlocks = input.bool(true,       "Show 1H block zones",                      group = grpV)
+
+// ------------------------ HTF Rejection Block logic -------------------------
+// Evaluated on the higher timeframe. Index [1] = last CLOSED HTF candle (the
+// rejection candle). The FVG is formed by the three candles before it [2][3][4].
+detectRB() =>
+    body    = math.abs(close[1] - open[1])
+    upWick  = high[1] - math.max(open[1], close[1])
+    dnWick  = math.min(open[1], close[1]) - low[1]
+
+    // 3-candle Fair Value Gap that sits beneath / above the rejection candle
+    bullFVG = low[2]  > high[4]          // gap up  -> imbalance below
+    bearFVG = high[2] < low[4]           // gap down -> imbalance above
+
+    // Rejection candle: prominent wick + local swing extreme
+    bullRej = dnWick >= body * wickFactor and dnWick >= upWick and low[1]  < low[2]  and low[1]  < low[3]
+    bearRej = upWick >= body * wickFactor and upWick >= dnWick and high[1] > high[2] and high[1] > high[3]
+
+    // Wick must have traded into the FVG
+    bull = bullRej and (not useFVG or (bullFVG and low[1]  < low[2]))
+    bear = bearRej and (not useFVG or (bearFVG and high[1] > high[2]))
+
+    // Block zone: body edge -> wick extreme
+    zTop = bull ? math.min(open[1], close[1]) : high[1]
+    zBot = bull ? low[1]                       : math.max(open[1], close[1])
+
+    [bull and not bear, bear and not bull, zTop, zBot]
+
+[rbBull, rbBear, zTop, zBot] = request.security(syminfo.tickerid, htf, detectRB(), lookahead = barmerge.lookahead_off)
+isNewHTF = ta.change(time(htf)) != 0
+
+// ------------------------------ State ---------------------------------------
+type RBlock
+    float top
+    float bot
+    float mid
+    bool  bull
+    bool  armed
+    bool  done
+    box   bx
+    line  ml
+
+var array<RBlock> blocks = array.new<RBlock>()
+
+inNY = not useSession or not na(time(timeframe.period, nySess, nyTz))
+
+var bool buySig  = false
+var bool sellSig = false
+buySig  := false
+sellSig := false
+
+// --------------------- Register a freshly closed block ----------------------
+if isNewHTF and (rbBull or rbBear) and barstate.isconfirmed
+    top = zTop
+    bot = zBot
+    mid = (top + bot) / 2.0
+    col = rbBull ? bullCol : bearCol
+    bx = na
+    ml = na
+    if showBlocks
+        bx := box.new(bar_index, top, bar_index, bot, border_color = color.new(col, 35),
+             bgcolor = color.new(col, 88), border_width = 1)
+        ml := line.new(bar_index, mid, bar_index, mid, color = color.new(col, 50),
+             style = line.style_dotted, width = 1)
+    array.push(blocks, RBlock.new(top, bot, mid, rbBull, false, false, bx, ml))
+    if array.size(blocks) > maxBlocks
+        old = array.shift(blocks)
+        box.delete(old.bx)
+        line.delete(old.ml)
+
+// ----------------------- Evaluate active blocks -----------------------------
+if array.size(blocks) > 0
+    for i = 0 to array.size(blocks) - 1
+        b = array.get(blocks, i)
+        if not b.done
+            // keep the zone extending to the live bar
+            box.set_right(b.bx, bar_index)
+            line.set_x2(b.ml, bar_index)
+
+            // arm once price has left the zone (so we only catch a genuine return)
+            if b.bull and low  > b.top
+                b.armed := true
+            if not b.bull and high < b.bot
+                b.armed := true
+
+            // invalidate if price closes through the far edge of the block
+            broke = (b.bull and close < b.bot) or (not b.bull and close > b.top)
+            if broke
+                b.done := true
+                box.set_bgcolor(b.bx, color.new(color.gray, 92))
+                box.set_border_color(b.bx, color.new(color.gray, 70))
+                line.set_color(b.ml, color.new(color.gray, 80))
+
+            // tap = price returns into the zone while armed and in-session
+            tapBull = b.bull       and b.armed and low  <= b.top and inNY and not b.done
+            tapBear = not b.bull   and b.armed and high >= b.bot and inNY and not b.done
+
+            if tapBull or tapBear
+                entry = b.bull ? b.top : b.bot
+                sl    = b.mid
+                risk  = math.abs(entry - sl)
+                tp    = b.bull ? entry + rr * risk : entry - rr * risk
+
+                lblTxt = (b.bull ? "BUY" : "SELL") + "  " + str.tostring(entry, format.mintick)
+                lblCol = b.bull ? bullCol : bearCol
+                label.new(bar_index, b.bull ? b.bot : b.top, lblTxt,
+                     style     = b.bull ? label.style_label_up : label.style_label_down,
+                     color     = color.new(lblCol, 0),
+                     textcolor = color.white, size = size.small)
+
+                if showRR
+                    box.new(bar_index, entry, bar_index + boxLen, tp, border_color = na, bgcolor = color.new(bullCol, 85))
+                    box.new(bar_index, entry, bar_index + boxLen, sl, border_color = na, bgcolor = color.new(bearCol, 85))
+                else
+                    line.new(bar_index, tp,    bar_index + boxLen, tp,    color = color.new(bullCol, 0), width = 1)
+                    line.new(bar_index, sl,    bar_index + boxLen, sl,    color = color.new(bearCol, 0), width = 1)
+                    line.new(bar_index, entry, bar_index + boxLen, entry, color = color.new(color.gray, 0), style = line.style_dashed)
+
+                if b.bull
+                    buySig := true
+                else
+                    sellSig := true
+
+                if oneShot
+                    b.done := true
+                    box.set_right(b.bx, bar_index)
+
+// ------------------------------ Markers -------------------------------------
+plotshape(buySig,  title = "Buy",  style = shape.triangleup,   location = location.belowbar, color = bullCol, size = size.tiny)
+plotshape(sellSig, title = "Sell", style = shape.triangledown, location = location.abovebar, color = bearCol, size = size.tiny)
+
+// ------------------------------ Alerts --------------------------------------
+alertcondition(buySig,  "RB Buy",  "Rejection Block BUY tap")
+alertcondition(sellSig, "RB Sell", "Rejection Block SELL tap")
+alertcondition(buySig or sellSig, "RB Any", "Rejection Block signal")
